@@ -1,15 +1,15 @@
 import { RouterProvider, createBrowserRouter, Navigate } from 'react-router-dom'
 import RootLayout from './layouts/RootLayout'
-import HomePage from './pages/HomePage'
-import ProblemListPage from './pages/ProblemListPage'
-import ProblemDetailPage from './pages/ProblemDetailPage'
-import LeaderboardPage from './pages/LeaderboardPage'
-import LoginPage from './pages/LoginPage'
-import RegisterPage from './pages/RegisterPage'
-import ProfilePage from './pages/ProfilePage'
-import NotFoundPage from './pages/NotFoundPage'
+import HomePage from './components/Home'
+import ProblemListPage from './components/ProblemList'
+import ProblemDetailPage from './components/ProblemDetail'
+import LeaderboardPage from './components/Leaderboard'
+import LoginPage from './components/Login'
+import RegisterPage from './components/Register'
+import ProfilePage from './components/Profile'
+import NotFoundPage from './components/NotFound'
 import { Suspense, lazy } from 'react'
-import type { ReactNode } from 'react'
+import authService from './services/auth'
 
 // Create loader component
 const PageLoader = () => (
@@ -20,11 +20,11 @@ const PageLoader = () => (
 );
 
 // Lazy load routes for code splitting
-const LazyContestsPage = lazy(() => import('./pages/ContestsPage'));
+const LazyContestsPage = lazy(() => import('./components/Contests'));
 
-// Simple auth check for protected routes
-const RequireAuth = ({ children }: { children: ReactNode }) => {
-  const isAuthenticated = localStorage.getItem('oj_auth_user') !== null;
+// Auth check for protected routes using our auth service
+const RequireAuth = ({ children }) => {
+  const isAuthenticated = authService.isAuthenticated();
   
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
@@ -114,4 +114,4 @@ function App() {
   )
 }
 
-export default App
+export default App 

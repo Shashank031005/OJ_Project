@@ -3,29 +3,18 @@ import hljs from 'highlight.js';
 // Import highlighting styles
 import 'highlight.js/styles/atom-one-dark.css';
 
-// No need to import individual languages as they come bundled with the full package
-// But now we can't use the individual language imports
-
-interface CodeEditorProps {
-  code: string;
-  language: string;
-  onChange: (code: string) => void;
-  height?: string;
-  readOnly?: boolean;
-}
-
-const CodeEditor: React.FC<CodeEditorProps> = ({
+const CodeEditor = ({
   code,
   language,
   onChange,
   height = '400px',
   readOnly = false
 }) => {
-  const [lineCount, setLineCount] = useState<number>(1);
-  const [fontSize, setFontSize] = useState<number>(14);
-  const editorRef = useRef<HTMLTextAreaElement>(null);
-  const previewRef = useRef<HTMLPreElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [lineCount, setLineCount] = useState(1);
+  const [fontSize, setFontSize] = useState(14);
+  const editorRef = useRef(null);
+  const previewRef = useRef(null);
+  const containerRef = useRef(null);
   
   // Update line numbers when code changes
   useEffect(() => {
@@ -82,7 +71,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   }, []);
   
   // Map language selection to highlight.js language
-  const getLanguageForHighlight = (lang: string): string => {
+  const getLanguageForHighlight = (lang) => {
     switch (lang) {
       case 'python': return 'python';
       case 'javascript': return 'javascript';
@@ -93,7 +82,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   };
   
   // Handle tab key in textarea
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = (e) => {
     if (e.key === 'Tab') {
       e.preventDefault();
       
@@ -116,7 +105,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   };
 
   // Handle zoom in/out functionality
-  const handleZoom = (increase: boolean) => {
+  const handleZoom = (increase) => {
     setFontSize(prevSize => {
       const newSize = increase ? prevSize + 1 : prevSize - 1;
       return Math.min(Math.max(newSize, 10), 20); // Limit between 10px and 20px
