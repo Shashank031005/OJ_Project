@@ -1,28 +1,21 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import loginImage from '/login.jpg';
-import authService from '../services/auth';
 
 const LogInPage = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setError('');
-    setIsLoading(true);
-
-    try {
-      await authService.login(email, password);
-      navigate('/');
-    } catch (err) {
-      setError(err.response?.data?.message || 'Login failed. Please check your credentials.');
-    } finally {
-      setIsLoading(false);
-    }
+    
+    // In a real app, you would validate credentials with an API
+    // For now, we'll just simulate a successful login
+    console.log('Logging in with:', email, password);
+    
+    // Navigate to home page on successful login
+    navigate('/home');
   };
 
   return (
@@ -32,12 +25,6 @@ const LogInPage = () => {
         <div className="w-full md:w-1/2 p-8 md:p-12">
           <h2 className="text-3xl font-bold text-blue-950 mb-2">Sign in</h2>
           <p className="text-gray-600 mb-6">Sign in to your account</p>
-
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
-              {error}
-            </div>
-          )}
 
           <form className="space-y-6" onSubmit={handleSubmit}>
             {/* Email Field */}
@@ -80,16 +67,15 @@ const LogInPage = () => {
               <button
                 type="submit"
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg text-lg"
-                disabled={isLoading}
               >
-                {isLoading ? 'Signing in...' : 'Sign in'}
+                Sign in
               </button>
             </div>
           </form>
 
           {/* Sign up link */}
           <p className="mt-6 text-sm text-center">
-            Don't have an account? <Link to="/register" className="text-blue-600 hover:underline font-medium">Sign up</Link>
+            Don't have an account? <a href="#" className="text-blue-600 hover:underline font-medium">Sign up</a>
           </p>
         </div>
 
