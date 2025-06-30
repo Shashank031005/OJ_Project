@@ -1,6 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import loginImage from '/login.jpg';
+
 const LogInPage = () => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    // In a real app, you would validate credentials with an API
+    // For now, we'll just simulate a successful login
+    console.log('Logging in with:', email, password);
+    
+    // Navigate to home page on successful login
+    navigate('/home');
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-white px-4">
       <div className="flex flex-col md:flex-row w-full max-w-6xl shadow-lg rounded-lg overflow-hidden">
@@ -9,7 +26,7 @@ const LogInPage = () => {
           <h2 className="text-3xl font-bold text-blue-950 mb-2">Sign in</h2>
           <p className="text-gray-600 mb-6">Sign in to your account</p>
 
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             {/* Email Field */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Email address</label>
@@ -19,6 +36,9 @@ const LogInPage = () => {
                   type="email"
                   className="w-full outline-none text-sm"
                   placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
               </div>
             </div>
@@ -32,6 +52,9 @@ const LogInPage = () => {
                   type="password"
                   className="w-full outline-none text-sm"
                   placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
                 />
               </div>
               <div className="text-right text-sm mt-2">
